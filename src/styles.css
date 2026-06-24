@@ -1,0 +1,534 @@
+:root {
+  color: #1c2420;
+  background: #eff6f4;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+code {
+  border-radius: 6px;
+  background: #dfe8e5;
+  padding: 0.1rem 0.35rem;
+}
+
+.app-shell {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 56px;
+}
+
+.topbar,
+.brand-row,
+.hero,
+.hero-actions,
+.pot-card-top,
+.card-actions,
+.dialog-header,
+.dialog-actions,
+.row-actions,
+.archive-list button {
+  display: flex;
+  align-items: center;
+}
+
+.topbar {
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.brand-row {
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.brand-mark {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 14px;
+  color: #f8fbf8;
+  background: #263c35;
+  box-shadow: 0 14px 30px rgba(38, 60, 53, 0.22);
+}
+
+.hero {
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 230px;
+  border-radius: 8px;
+  padding: clamp(24px, 5vw, 56px);
+  color: #f9fbf7;
+  background:
+    radial-gradient(circle at 82% 24%, rgba(252, 211, 125, 0.26), transparent 32%),
+    linear-gradient(135deg, #203d36 0%, #2f7d6d 52%, #d87453 100%);
+  box-shadow: 0 22px 58px rgba(39, 78, 69, 0.24);
+}
+
+.hero h1 {
+  margin: 0.18rem 0 0.8rem;
+  font-size: clamp(2.5rem, 7vw, 5.8rem);
+  line-height: 0.96;
+  letter-spacing: 0;
+}
+
+.hero-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  opacity: 0.82;
+}
+
+.primary-button,
+.ghost-button,
+.text-button,
+.icon-button,
+.card-actions button,
+.archive-list button,
+.danger-button,
+.row-actions button,
+.snapshot-row > button {
+  border: 0;
+  border-radius: 8px;
+  min-height: 42px;
+}
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 18px;
+  color: #fbfff9;
+  background: #203d36;
+  font-weight: 800;
+}
+
+.hero .primary-button {
+  background: #fbfff9;
+  color: #213b35;
+}
+
+.ghost-button {
+  padding: 0 16px;
+  color: #fbfff9;
+  background: rgba(255, 255, 255, 0.14);
+  font-weight: 800;
+}
+
+.text-button {
+  padding: 0;
+  color: #2f7d6d;
+  background: transparent;
+  font-weight: 800;
+}
+
+.icon-button {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  color: #203d36;
+  background: #dce8e4;
+}
+
+.delta {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.hero .delta {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.delta.positive {
+  color: #185c4e;
+  background: #dff3ec;
+}
+
+.delta.negative {
+  color: #9e3728;
+  background: #ffe5dd;
+}
+
+.hero .delta.positive,
+.hero .delta.negative {
+  color: #fff;
+}
+
+.pot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.pot-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 240px;
+  border: 1px solid #dce5df;
+  border-radius: 8px;
+  padding: 20px;
+  background: #fbfffc;
+  box-shadow: 0 12px 28px rgba(43, 66, 59, 0.08);
+}
+
+.pot-card::before {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 5px;
+  background: var(--pot-color);
+  content: "";
+}
+
+.pot-card-top {
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.pot-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--pot-color);
+}
+
+.pot-card h2,
+.archive-section h2,
+.dialog h2,
+.empty-state h2 {
+  margin: 0;
+  font-size: 1.12rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.pot-card p {
+  margin: 0.25rem 0 0;
+  color: #69766f;
+}
+
+.pot-card strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.note {
+  min-height: 24px;
+  margin-top: 14px !important;
+  color: #4b5b53 !important;
+}
+
+.card-actions {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.card-actions button,
+.archive-list button,
+.row-actions button,
+.snapshot-row > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  color: #263c35;
+  background: #edf3ef;
+  font-weight: 750;
+}
+
+.muted {
+  color: #6b7871;
+}
+
+.empty-state,
+.archive-section {
+  margin-top: 26px;
+  border: 1px dashed #b9c8c1;
+  border-radius: 8px;
+  padding: 28px;
+  background: rgba(255, 255, 255, 0.55);
+  text-align: center;
+}
+
+.empty-state svg {
+  color: #2f7d6d;
+}
+
+.archive-section {
+  text-align: left;
+}
+
+.archive-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.auth-page,
+.splash {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(120deg, rgba(47, 125, 109, 0.14), transparent 46%),
+    linear-gradient(310deg, rgba(216, 116, 83, 0.16), transparent 42%),
+    #eff6f4;
+}
+
+.auth-panel {
+  width: min(480px, 100%);
+  border: 1px solid #dbe5df;
+  border-radius: 8px;
+  padding: clamp(24px, 6vw, 44px);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 24px 70px rgba(35, 62, 54, 0.13);
+}
+
+.auth-panel h1 {
+  margin: 28px 0 12px;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.auth-panel p {
+  color: #5c6a63;
+}
+
+.auth-form,
+.stack-form {
+  display: grid;
+  gap: 14px;
+}
+
+.auth-form {
+  margin: 26px 0 16px;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+  color: #35433d;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #cbd8d2;
+  border-radius: 8px;
+  padding: 11px 12px;
+  color: #1d2823;
+  background: #fbfffc;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 3px solid rgba(47, 125, 109, 0.18);
+  border-color: #2f7d6d;
+}
+
+.form-error {
+  border-radius: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  color: #8b2d23;
+  background: #ffe8e1;
+}
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(24, 34, 30, 0.46);
+  z-index: 10;
+}
+
+.dialog {
+  width: min(520px, 100%);
+  max-height: min(88vh, 860px);
+  overflow: auto;
+  border-radius: 8px;
+  padding: 20px;
+  background: #fbfffc;
+  box-shadow: 0 28px 90px rgba(19, 28, 25, 0.34);
+}
+
+.dialog.wide {
+  width: min(860px, 100%);
+}
+
+.dialog-header {
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.dialog-actions {
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.danger-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  color: #8b2d23;
+  background: #ffe8e1;
+  font-weight: 800;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.choice,
+.swatch {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  color: #263c35;
+  background: #edf3ef;
+}
+
+.choice.active,
+.swatch.active {
+  border-color: #1f3831;
+  box-shadow: 0 0 0 3px rgba(47, 125, 109, 0.18);
+}
+
+.chart-wrap {
+  width: 100%;
+  height: 280px;
+  margin-bottom: 14px;
+}
+
+.snapshot-list {
+  display: grid;
+  gap: 10px;
+}
+
+.snapshot-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid #e0e8e3;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.snapshot-row.editing {
+  grid-template-columns: 120px 150px 1fr auto;
+}
+
+.snapshot-row span,
+.snapshot-row em {
+  display: block;
+  color: #68756f;
+  font-size: 0.86rem;
+}
+
+@media (max-width: 700px) {
+  .app-shell {
+    width: min(100% - 20px, 1120px);
+    padding-top: 14px;
+  }
+
+  .hero {
+    align-items: flex-start;
+    flex-direction: column;
+    min-height: 260px;
+  }
+
+  .hero-actions {
+    justify-content: flex-start;
+  }
+
+  .pot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .split,
+  .snapshot-row,
+  .snapshot-row.editing {
+    grid-template-columns: 1fr;
+  }
+
+  .dialog-actions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .dialog-actions button,
+  .primary-button {
+    width: 100%;
+  }
+}
