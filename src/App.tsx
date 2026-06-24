@@ -57,7 +57,45 @@ type DialogMode =
   | { type: "editPot"; pot: PotWithSnapshots }
   | { type: "snapshot"; pot: PotWithSnapshots }
   | { type: "history"; pot: PotWithSnapshots }
+  | { type: "totalHistory"; pots: PotWithSnapshots[] }
   | null;
+
+type TotalHistoryPoint = {
+  time: number;
+  date: string;
+  amountCents: number;
+  value: number;
+};
+
+function buildTotalHistory(pots: PotWithSnapshots[]): TotalHistoryPoint[] {
+  const events = pots
+    .flatMap((pot) =>
+      pot.snapshots.map((snapshot) => ({
+        potId: pot.id,
+        time: timestampToDate(snapshot.measuredAt).getTime(),
+        amountCents: snapshot.amountCents,
+      })),
+    )
+    .sort((a, b) => a.time - b.time);
+
+  const latestAmounts = new Map<string, number>();
+  const totalsByDay = new Map<string, TotalHistoryPoint>();
+
+  events.forEach((event) => {
+    latestAmounts.set(event.potId, event.amountCents);
+    const totalCents = [...latestAmounts.values()].reduce((sum, amountCents) => sum + amountCents, 0);
+    const date = formatDate(new Date(event.time));
+
+    totalsByDay.set(date, {
+      time: event.time,
+      date,
+      amountCents: totalCents,
+      value: totalCents / 100,
+    });
+  });
+
+  return [...totalsByDay.values()].sort((a, b) => a.time - b.time);
+}
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -180,10 +218,8 @@ function Dashboard({ user }: { user: User }) {
   const activePots = useMemo(() => pots.filter((pot) => !pot.archivedAt), [pots]);
   const archivedPots = useMemo(() => pots.filter((pot) => pot.archivedAt), [pots]);
   const total = useMemo(() => activePots.reduce((sum, pot) => sum + (pot.current?.amountCents ?? 0), 0), [activePots]);
-  const previousTotal = useMemo(
-    () => activePots.reduce((sum, pot) => sum + (pot.previous?.amountCents ?? pot.current?.amountCents ?? 0), 0),
-    [activePots],
-  );
+  const totalHistory = useMemo(() => buildTotalHistory(activePots), [activePots]);
+  const previousTotal = totalHistory.at(-2)?.amountCents ?? total;
 
   useEffect(() => {
     if (!db) return;
@@ -241,6 +277,10 @@ function Dashboard({ user }: { user: User }) {
             <Plus size={18} />
             Potje
           </button>
+          <button className="ghost-button" type="button" onClick={() => setDialog({ type: "totalHistory", pots: activePots })}>
+            <LineChart size={18} />
+            Totaal
+          </button>
         </div>
       </section>
 
@@ -280,6 +320,7 @@ function Dashboard({ user }: { user: User }) {
       {dialog?.type === "editPot" && <PotForm user={user} pot={dialog.pot} onClose={() => setDialog(null)} />}
       {dialog?.type === "snapshot" && <SnapshotDialog user={user} pot={dialog.pot} onClose={() => setDialog(null)} />}
       {dialog?.type === "history" && <HistoryDialog user={user} pot={dialog.pot} onClose={() => setDialog(null)} />}
+      {dialog?.type === "totalHistory" && <TotalHistoryDialog pots={dialog.pots} onClose={() => setDialog(null)} />}
     </main>
   );
 }
@@ -545,6 +586,36 @@ function HistoryDialog({ user, pot, onClose }: { user: User; pot: PotWithSnapsho
           .map((snapshot) => (
             <SnapshotRow key={snapshot.id} user={user} pot={pot} snapshot={snapshot} />
           ))}
+      </div>
+    </Dialog>
+  );
+}
+
+function TotalHistoryDialog({ pots, onClose }: { pots: PotWithSnapshots[]; onClose: () => void }) {
+  const chartData = buildTotalHistory(pots);
+
+  return (
+    <Dialog title="Totaal verloop" onClose={onClose} wide>
+      <div className="chart-wrap">
+        {chartData.length > 0 ? (
+          <ResponsiveContainer width="100%" height={260}>
+            <AreaChart data={chartData}>
+              <defs>
+                <linearGradient id="total-flow" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#2f7d6d" stopOpacity={0.45} />
+                  <stop offset="95%" stopColor="#2f7d6d" stopOpacity={0.02} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#d9ded7" />
+              <XAxis dataKey="date" tickLine={false} axisLine={false} />
+              <YAxis tickLine={false} axisLine={false} width={72} />
+              <Tooltip formatter={(value) => formatMoney(Math.round(Number(value) * 100), "EUR")} />
+              <Area type="monotone" dataKey="value" stroke="#2f7d6d" fill="url(#total-flow)" strokeWidth={3} />
+            </AreaChart>
+          </ResponsiveContainer>
+        ) : (
+          <p className="muted">Nog geen metingen.</p>
+        )}
       </div>
     </Dialog>
   );

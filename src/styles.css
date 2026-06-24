@@ -142,6 +142,10 @@ code {
 }
 
 .ghost-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   padding: 0 16px;
   color: #fbfff9;
   background: rgba(255, 255, 255, 0.14);
@@ -176,7 +180,7 @@ code {
 }
 
 .hero .delta {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.86);
 }
 
 .delta.positive {
@@ -191,7 +195,7 @@ code {
 
 .hero .delta.positive,
 .hero .delta.negative {
-  color: #fff;
+  color: #203d36;
 }
 
 .pot-grid {
